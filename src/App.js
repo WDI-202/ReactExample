@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -8,7 +8,6 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <MyInfoComponent />
-        
       </header>
     </div>
   );
@@ -22,32 +21,38 @@ function App() {
 */
 
 const MyInfoComponent = () => {
-
-  const [myAge, setMyAge] = useState(0)
-  const [myFavoriteColor, setMyFavoriteColor] = useState("red") 
+  const [myAge, setMyAge] = useState(0);
+  const [myFavoriteColor, setMyFavoriteColor] = useState("red");
 
   const myName = "Ginny";
   const favoriteMovies = ["Avengers 1", "Avengers 3", "Avengers 4"];
   return (
     <div>
       <p>{myName}</p>
-      <p style={{backgroundColor: myFavoriteColor}}>{myFavoriteColor}</p>
-      <p>
-        {favoriteMovies}
-      </p>
+      <p style={{ backgroundColor: myFavoriteColor }}>{myFavoriteColor}</p>
+      <ul>
+        {favoriteMovies.map((element, index) => {
+          return <li key={`${element}-${index}`}>{element}</li>;
+        })}
+      </ul>
       <p>I am {myAge} years old</p>
-      <button onClick={()=>{
-        setMyAge(myAge + 1)
-        console.log(myAge)
-      }}>
+      <button
+        onClick={() => {
+          setMyAge(myAge + 1);
+          console.log(myAge);
+        }}
+      >
         +
       </button>
-      <input type="text" onChange={(event)=>{
-        const value = event.target.value;
-        setMyFavoriteColor(value)
-      }}></input>
+      <input
+        type="text"
+        onChange={(event) => {
+          const value = event.target.value;
+          setMyFavoriteColor(value);
+        }}
+      ></input>
     </div>
   );
-}
+};
 
 export default App;
