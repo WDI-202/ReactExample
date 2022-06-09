@@ -58,7 +58,7 @@ const MyInfoComponent = () => {
       <ul>
         {favoriteMovies.map((element, index) => {
           return (
-            <li>
+            <li key={`favorite-movie-input-${index}`}>
               <label>Movie {index + 1}: </label>
               <input type="text" value={favoriteMovies[index]} onChange={(e)=>{
                 console.log(e.target.value)
