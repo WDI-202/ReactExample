@@ -21,36 +21,57 @@ function App() {
 */
 
 const MyInfoComponent = () => {
-  const [myAge, setMyAge] = useState(0);
+  const [myName, setMyName] = useState("Ginny");
   const [myFavoriteColor, setMyFavoriteColor] = useState("red");
+  const [favoriteMovies, setFavoriteMovies] = useState([
+    "Avengers 1",
+    "Avengers 3",
+    "Avengers 4",
+  ]);
 
-  const myName = "Ginny";
-  const favoriteMovies = ["Avengers 1", "Avengers 3", "Avengers 4"];
   return (
     <div>
+      <h4>Name: </h4>
       <p>{myName}</p>
-      <p style={{ backgroundColor: myFavoriteColor }}>{myFavoriteColor}</p>
-      <ul>
-        {favoriteMovies.map((element, index) => {
-          return <li key={`${element}-${index}`}>{element}</li>;
-        })}
-      </ul>
-      <p>I am {myAge} years old</p>
-      <button
-        onClick={() => {
-          setMyAge(myAge + 1);
-          console.log(myAge);
-        }}
-      >
-        +
-      </button>
       <input
         type="text"
-        onChange={(event) => {
-          const value = event.target.value;
-          setMyFavoriteColor(value);
+        value={myName}
+        onChange={(e) => {
+          console.log(e.target.value)
+          setMyName(e.target.value);
         }}
       ></input>
+      <h4>Favorite Color: </h4>
+      <p style={{ backgroundColor: myFavoriteColor }}>{myFavoriteColor}</p>
+      <input
+        type="text"
+        onChange={(e) => {
+          setMyFavoriteColor(e.target.value);
+        }}
+      ></input>
+      <h4>Favorite Movies: </h4>
+      <ul>
+        {favoriteMovies.map((element, index) => {
+          return <li key={`favorite-movie-${index}`}>{element}</li>;
+        })}
+      </ul>
+      <ul>
+        {favoriteMovies.map((element, index) => {
+          return (
+            <li>
+              <label>Movie {index + 1}: </label>
+              <input type="text" value={favoriteMovies[index]} onChange={(e)=>{
+                console.log(e.target.value)
+                const updatedMovies = [favoriteMovies[0], favoriteMovies[1], favoriteMovies[2]]
+                updatedMovies[index] = e.target.value
+                setFavoriteMovies(updatedMovies)
+              }}>
+              </input>
+            </li>
+          );
+        })}
+      </ul>
+      
     </div>
   );
 };
