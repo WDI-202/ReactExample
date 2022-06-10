@@ -3,10 +3,23 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [importance, setImportance] = useState(importanceOptions[0].value)
+  const [tasks, setTasks] = useState([])
   return (
     <div className="App">
       <header className="App-header">
-        <ToDoComponent/>
+        <ToDoComponent
+          title={title}
+          setTitle={setTitle}
+          description={description} 
+          setDescription={setDescription}
+          importance={importance} 
+          setImportance={setImportance}
+          tasks={tasks}
+          setTasks={setTasks}
+        />
       </header>
     </div>
   );
@@ -26,57 +39,63 @@ const importanceOptions = [{
   color: "yellow"
 }, {
   title: "Critical",
-  value: "Critical",
+  value: "critical",
   color: "red"
 }]
 
-const ToDoComponent = () => {
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [importance, setImportance] = useState("")
-  const [tasks, setTasks] = useState([])
+const ToDoTask = (props) => {
+  return (
+    <div style={{color: props.color}}>
+      <h2>{props.title}</h2>
+      {props.description}
+      <br/>
+    </div>
+  )
+}
 
+const ToDoComponent = (props) => {
+  //ToDo: Destructure args
   return (
     <div>
       <h1>ToDoComponent</h1>
-      {title}
-      {description}
-      {importance}
-      <hr/>
-      {tasks.map((task)=>{
-        const importance = JSON.parse(task.importance)
+      {props.tasks.map((task)=>{
+        const importanceColor = importanceOptions.find((option)=>{
+          return option.value === task.importance
+        }).color
         return (
-          <div>
-            <h2>{task.title}</h2>
-            
-            {task.description}
-            <br/>
-            <span style={{color: importance.color}}>{importance.title}</span>
-            <br/>
-          </div>
+          <ToDoTask
+            title={task.title}
+            description={task.description}
+            color={importanceColor}
+          />
         )
       })}
       <hr/>
       <label>Title</label>
-      <input type="text" onChange={(e)=>{
+      <input type="text" value={props.title} onChange={(e)=>{
         const value = e.target.value
-        setTitle(value)
+        props.setTitle(value)
       }}></input>
       <br/>
       <label>Description</label>
-      <input type="text" onChange={(e)=>{
+      <input type="text" value={props.description} onChange={(e)=>{
         const value = e.target.value
-        setDescription(value)
+        props.setDescription(value)
       }}></input>
       <br/>
-      <select onChange={(e)=>{
-        const value = e.target.value
-        setImportance(value)
-      }}>
-        {importanceOptions.map((importanceOption)=>{
+      <select 
+        defaultValue={props.importance}
+        onChange={(e)=>{
+          const value = e.target.value
+          console.log(value)
+          props.setImportance(value)
+        }}
+      >
+        {importanceOptions.map((importanceOption, index)=>{
           return (
             <option 
-              value={JSON.stringify(importanceOption)}
+              key={`${importanceOption}-${index}`}
+              value={importanceOption.value}
             >
               {importanceOption.title}
             </option>
@@ -86,13 +105,15 @@ const ToDoComponent = () => {
       <br/>
       <button onClick={()=>{
         const newTask = {
-          title: title,
-          description: description,
-          importance: importance,
+          title: props.title,
+          description: props.description,
+          importance: props.importance,
         }
-        const copyOfTasks = [...tasks]
+        const copyOfTasks = [...props.tasks]
         copyOfTasks.push(newTask)
-        setTasks(copyOfTasks)
+        props.setTitle("")
+        props.setDescription("")
+        props.setTasks(copyOfTasks)
       }}>Submit</button>
     </div>
   )
