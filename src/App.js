@@ -6,12 +6,99 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <MyInfoComponent />
+        <ToDoComponent/>
       </header>
     </div>
   );
 }
+
+const importanceOptions = [{
+  title: "Low",
+  value: "low",
+  color: "green"
+}, {
+  title: "Medium",
+  value: "medium",
+  color: "orange"
+}, {
+  title: "High",
+  value: "high",
+  color: "yellow"
+}, {
+  title: "Critical",
+  value: "Critical",
+  color: "red"
+}]
+
+const ToDoComponent = () => {
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [importance, setImportance] = useState("")
+  const [tasks, setTasks] = useState([])
+
+  return (
+    <div>
+      <h1>ToDoComponent</h1>
+      {title}
+      {description}
+      {importance}
+      <hr/>
+      {tasks.map((task)=>{
+        const importance = JSON.parse(task.importance)
+        return (
+          <div>
+            <h2>{task.title}</h2>
+            
+            {task.description}
+            <br/>
+            <span style={{color: importance.color}}>{importance.title}</span>
+            <br/>
+          </div>
+        )
+      })}
+      <hr/>
+      <label>Title</label>
+      <input type="text" onChange={(e)=>{
+        const value = e.target.value
+        setTitle(value)
+      }}></input>
+      <br/>
+      <label>Description</label>
+      <input type="text" onChange={(e)=>{
+        const value = e.target.value
+        setDescription(value)
+      }}></input>
+      <br/>
+      <select onChange={(e)=>{
+        const value = e.target.value
+        setImportance(value)
+      }}>
+        {importanceOptions.map((importanceOption)=>{
+          return (
+            <option 
+              value={JSON.stringify(importanceOption)}
+            >
+              {importanceOption.title}
+            </option>
+          )
+        })}
+      </select>
+      <br/>
+      <button onClick={()=>{
+        const newTask = {
+          title: title,
+          description: description,
+          importance: importance,
+        }
+        const copyOfTasks = [...tasks]
+        copyOfTasks.push(newTask)
+        setTasks(copyOfTasks)
+      }}>Submit</button>
+    </div>
+  )
+}
+
+
 
 /* 
   Rules of Components:
@@ -20,7 +107,7 @@ function App() {
     3. Components can be included in other components like html elements
 */
 
-const MyInfoComponent = () => {
+/* const MyInfoComponent = () => {
   const [myName, setMyName] = useState("Ginny");
   const [myFavoriteColor, setMyFavoriteColor] = useState("red");
   const [favoriteMovies, setFavoriteMovies] = useState([
@@ -74,6 +161,6 @@ const MyInfoComponent = () => {
       
     </div>
   );
-};
+}; */
 
 export default App;
